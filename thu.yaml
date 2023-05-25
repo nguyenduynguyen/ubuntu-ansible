@@ -1,0 +1,22 @@
+---
+- name: Get Device Facts
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  vars_prompt:
+    - name: "USERNAME"
+      prompt: "Username"
+      private: no
+    - name: "DEVICE_PASSWORD"
+      prompt: "Device password"
+      private: yes
+  tasks: 
+    - name: Retrieve facts from devices running Junos OS
+      juniper.device.facts:  
+        user: "{{ USERNAME }}"
+        passwd: "{{ DEVICE_PASSWORD }}"
+        savedir: "{{ playbook_dir }}"
+    - name: Print facts
+      debug:
+        var: junos.version
