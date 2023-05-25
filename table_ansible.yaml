@@ -1,0 +1,21 @@
+---
+- name: Get OSPF information
+  hosts: all
+  connection: local
+  gather_facts: no
+  vars:
+    user: "{{ admin_username }}"
+    passwd: "{{ admin_password }}"
+
+  vars_files:
+    - vault-vars.yaml
+  tasks:
+    - name: Get OSPF interface information
+      juniper.device.table:        
+        file: "ospf.yml"
+        table: "OspfInterfaceTable"
+      register: result
+
+    - name: Print response
+      debug:
+        var: result

@@ -1,0 +1,22 @@
+---
+- name: Get interface information
+  hosts: all
+  connection: local
+  gather_facts: no
+  vars:
+    user: "{{ admin_username }}"
+    passwd: "{{ admin_password }}"
+
+  vars_files:
+    - vault-vars.yaml
+  tasks:
+    - name: Get interface information for Ethernet interfaces
+      juniper.device.table:        
+        file: "ethport.yml"
+        kwargs:
+          interface_name: "ge-1/0/0"          
+      register: result
+
+    - name: Print response
+      debug:
+        var: result
