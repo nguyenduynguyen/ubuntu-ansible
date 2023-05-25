@@ -1,0 +1,20 @@
+---
+- name: Execute RPC
+  hosts: all
+  connection: local
+  gather_facts: no
+  vars:
+    user: "{{ admin_username }}"
+    passwd: "{{ admin_password }}"
+
+  vars_files:
+    - vault-vars.yaml
+  tasks:
+    - name: Get interface information
+      juniper.device.rpc:
+        rpcs: "get-interface-information"
+      register: junos_result
+
+    - name: Print response
+      debug:
+        var: junos_result

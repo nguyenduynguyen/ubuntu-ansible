@@ -1,0 +1,22 @@
+---
+- name: Get device information
+  hosts: all
+  connection: local
+  gather_facts: no
+  vars:
+    user: "{{ admin_username }}"
+    passwd: "{{ admin_password }}"
+
+  vars_files:
+    - vault-vars.yaml
+  tasks:
+    - name: Get software and uptime information
+      juniper.device.command:        
+        commands: 
+          - "show version"        
+          - "show system uptime"
+      register: junos_result
+
+    - name: Print response
+      debug:
+        var: junos_result
